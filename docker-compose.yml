@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  neurosis_fastify_api_rest:
+    build: ./neurosis-fastify-api-rest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./neurosis-fastify-api-rest:/app
+      - /app/node_modules
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/neurosis
+      - CHOKIDAR_USEPOLLING=true
+      # - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      # - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      # - BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
+      # - REFRESH_TOKEN_ROTATION=${REFRESH_TOKEN_ROTATION}
+    depends_on:
+      - mongo
+
+  neurosis_vite:
+    build: ./neurosis-vite
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./neurosis-vite:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_REST=http://localhost:3000/v1
+
+volumes:
+  mongo_data:
+
+
