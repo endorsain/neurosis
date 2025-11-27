@@ -1,0 +1,6 @@
+[submodule "neurosis-fastify-api-rest"]
+	path = neurosis-fastify-api-rest
+	url = https://github.com/endorsain/neurosis-fastify-api-rest.git
+[submodule "neurosis-vite"]
+	path = neurosis-vite
+	url = https://github.com/endorsain/neurosis-vite.git
