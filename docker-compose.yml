@@ -10,7 +10,7 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  neurosis_fastify_api_rest:
+  neurosis-fastify-api-rest:
     build: ./neurosis-fastify-api-rest
     ports:
       - "3000:3000"
@@ -20,14 +20,12 @@ services:
     environment:
       - MONGO_URI=mongodb://mongo:27017/neurosis
       - CHOKIDAR_USEPOLLING=true
-      # - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
-      # - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
-      # - BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
-      # - REFRESH_TOKEN_ROTATION=${REFRESH_TOKEN_ROTATION}
     depends_on:
       - mongo
+    networks:
+      - default
 
-  neurosis_vite:
+  neurosis-vite:
     build: ./neurosis-vite
     ports:
       - "5173:5173"
@@ -36,6 +34,32 @@ services:
       - /app/node_modules
     environment:
       - VITE_API_REST=http://localhost:3000/v1
+
+  neurosis-expo-app:
+    build: ./neurosis-expo-app
+    # ports:
+      # - "19000:19000"
+    ports:
+      - "19000:19000" # Expo Metro Bundler
+      - "19001:19001" # Expo Development Server
+    volumes:
+      - ./neurosis-expo-app:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - EXPO_API_REST=http://localhost:3000/v1
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Para acceder a servicios en tu máquina anfitriona (ej. tu API Fastify)
+    networks:
+      - default
+    # AÑADE ESTA LÍNEA para mantener el contenedor en ejecución
+    command: tail -f /dev/null
+
+# Agrega las redes (si no las tenías)
+networks:
+  default: 
+  # Puedes omitir esta sección si no necesitas configuraciones específicas
+    driver: bridge      
 
 volumes:
   mongo_data:
