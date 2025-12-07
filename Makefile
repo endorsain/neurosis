@@ -1,7 +1,6 @@
 COMPOSE_FILE := docker-compose.yml
-EXPO_APP := neurosis-expo-app
-FASTIFY_API_REST := neurosis-fastify-api-rest
-VITE := neurosis-vite
+FASTIFY_API_REST := fastify-api-rest
+VITE := vite
 
 .PHONY: up build down logs start-api start-vite
 
@@ -27,4 +26,4 @@ api-logs:
 	docker compose logs -f $(FASTIFY_API_REST)
 	
 vite-logs:
-	docker compose logs -f $(VITE)		
+	docker compose logs -f $(VITE)
