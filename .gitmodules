@@ -7,3 +7,6 @@
 [submodule "neurosis-expo-app"]
 	path = neurosis-expo-app
 	url = https://github.com/endorsain/neurosis-expo-app.git
+[submodule "neurosis-nestjs-api-rest"]
+	path = neurosis-nestjs-api-rest
+	url = https://github.com/endorsain/neurosis-nestjs-api-rest.git
